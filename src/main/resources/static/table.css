@@ -1,0 +1,341 @@
+/* Неоновая цветовая палитра */
+:root {
+    --primary-bg: #1a1a1a;
+    --secondary-bg: #2a2a2a;
+    --accent-bg: #00ffcc;
+    --text-color: #ffffff;
+    --link-color: #ff66b2;
+    --link-hover-color: #ff3385;
+    --button-glow: 0 0 10px rgba(0, 255, 204, 0.7);
+}
+
+/* Обнуление стилей и установка шрифта */
+body, h1, h2, p, ul, li {
+    margin: 0;
+    padding: 0;
+}
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--primary-bg);
+    color: var(--text-color);
+    border-radius: 10px;
+    padding: 20px;
+    transition: background-color 0.3s ease;
+    text-transform: uppercase;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+#background-image {
+    position: fixed;
+    bottom: 5%;
+    left: 5%;
+    width: 10%;
+    animation: animateBackground 5s linear infinite alternate;
+}
+
+/* Другие стили */
+
+@keyframes animateBackground {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-30%);
+    }
+}
+
+#container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+a {
+    text-decoration: none;
+    color: #ffffff; /* Белый цвет текста */
+    font-size: 16px;
+    /* Убираем смену цвета и подчёркивание */
+    transition: none;
+    font-weight: bold;
+}
+
+a:hover {
+    color: #ffffff; /* Белый цвет текста при наведении */
+}
+
+#menu {
+    background-color: var(--secondary-bg);
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    border-radius: 15px;
+    width: 100%;
+    margin-bottom: 20px;
+    box-shadow: 0 0 30px rgba(0, 255, 204, 0.5);
+}
+
+#menu ul {
+    list-style-type: none;
+    display: flex;
+
+}
+
+#menu li {
+    margin-right: 20px;
+}
+
+#menu a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 16px;
+    transition: color 0.3s ease;
+    font-weight: bold;
+}
+
+#menu a:hover {
+    color: var(--accent-bg);
+}
+
+#content {
+    width: 100%;
+    padding: 20px;
+    border-radius: 10px;
+    transition: box-shadow 0.3s ease;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.add-button {
+    background-color: var(--accent-bg);
+    color: #1F2421;
+    border: none;
+    padding: 10px 20px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 5px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.add-button:hover {
+    background-color: #B8E0D2;
+    box-shadow: var(--button-glow);
+}
+
+table tbody tr td form button {
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border-radius: 15px; /* Увеличен радиус границы */
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(0, 255, 204, 0.5); /* Увеличен радиус тени */
+}
+
+thead {
+    background-color: var(--secondary-bg);
+    color: var(--text-color);
+    border-top-left-radius: 15px; /* Увеличен радиус границы */
+    border-top-right-radius: 15px; /* Увеличен радиус границы */
+}
+
+th, td {
+    border: none;
+    padding: 15px;
+    text-align: center;
+    font-weight: bold;
+}
+
+tbody tr:hover {
+    background-color: #3D3D3D; /* Изменено на бледно серый цвет */
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+#myModal .modal-content {
+    background-color: var(--secondary-bg);
+    margin: 10% auto;
+    padding: 20px;
+    max-width: 700px; /* Задайте желаемую максимальную ширину */
+    border-radius: 10px;
+    text-align: center; /* Чтобы текст был по центру формы */
+}
+
+
+input{
+    width: 80%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #42D9C8;
+    border-radius: 5px;
+    color: #1F2421;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+select{
+    width: 88%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #42D9C8;
+    border-radius: 5px;
+    color: #1F2421;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+#myModal button {
+    background-color: var(--accent-bg);
+    color: #1F2421;
+    border: none;
+    padding: 10px 20px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 5px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+#myModal button:hover {
+    background-color: #B8E0D2;
+    box-shadow: var(--button-glow);
+}
+
+#myModal .close {
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+#myModal .close:hover {
+    color: var(--accent-bg);
+}
+
+#editModal .modal-content {
+    background-color: var(--secondary-bg);
+    margin: 10% auto;
+    padding: 20px;
+    max-width: 700px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+#editModal input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #42D9C8;
+    border-radius: 5px;
+    color: #1F2421;
+}
+
+#editModal button {
+    background-color: var(--accent-bg);
+    color: #1F2421;
+    border: none;
+    padding: 10px 20px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 5px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+#editModal button:hover {
+    background-color: #B8E0D2;
+    box-shadow: var(--button-glow);
+}
+
+.unordered-button {
+    background-color: var(--accent-bg);
+    color: #1F2421;
+    border: none;
+    padding: 10px 20px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 5px;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.unordered-button:hover {
+    background-color: #B8E0D2;
+    box-shadow: var(--button-glow);
+}
+
+/* Скрываем стандартный скроллбар */
+body::-webkit-scrollbar {
+    width: 12px; /* ширина вертикального скроллбара */
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 255, 204, 0.5); /* цвет бегунка */
+    border-radius: 6px; /* закругление углов бегунка */
+}
+
+body::-webkit-scrollbar-track {
+    background-color:  var(--primary-bg); /* цвет трека */
+}
+
+/* Опционально, добавьте стили для горизонтального скроллбара */
+body::-webkit-scrollbar-thumb:horizontal {
+    background-color: rgba(0, 255, 204, 0.5); /* цвет бегунка */
+}
+
+body::-webkit-scrollbar-track:horizontal {
+    background-color:  var(--primary-bg); /* цвет трека */
+}
+
+
+@media screen and (max-width: 600px) {
+    #menu {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #menu li {
+        margin-bottom: 10px;
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .add-button {
+        width: 100%;
+        margin-top: 10px;
+    }
+}

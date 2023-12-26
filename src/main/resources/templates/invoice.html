@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>МАСТЕРСТРОЙ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/table.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+</head>
+<style>
+    .flatpickr-calendar {
+        background-color: #1F2421;
+        color: var(--accent-bg);
+        font-weight: bold;
+        box-shadow: 0 0 30px rgba(0, 255, 204, 0.3);
+    }
+
+    .flatpickr-calendar *,
+    .flatpickr-calendar .flatpickr-monthDropdown-months,
+    .flatpickr-calendar .flatpickr-weekdays,
+    .flatpickr-calendar .flatpickr-inner,
+    .flatpickr-calendar .flatpickr-month {
+        color: var(--accent-bg);
+        font-weight: bold;
+    }
+
+    .flatpickr-day,
+    .flatpickr-monthDropdown-month,
+    .flatpickr-monthDropdown-year {
+        color: var(--accent-bg);
+        font-weight: bold;
+    }
+</style>
+<body>
+<div id="container">
+    <div id="menu">
+        <ul>
+            <li><a href="/good">Товары</a></li>
+            <li><a href="/good_request">Заявки на товары</a></li>
+            <li><a href="/invoice">Накладные</a></li>
+            <li><a href="/order_assembly">ПУНКТЫ ВЫДАЧИ</a></li>
+            <li><a href="/order">Заказы</a></li>
+            <li><a href="/order_detail">Детали заказов</a></li>
+            <li><a href="/shipment">Партии</a></li>
+            <li><a href="/store">Магазины</a></li>
+            <li><a href="/warehouse">Склады</a></li>
+            <li><a href="/warehouse_supplies">Поставки склада</a></li>
+        </ul>
+    </div>
+    <div id="content">
+        <h1>МастерСтрой</h1>
+        <div class="header">
+            <h2>Список накладных</h2>
+            <button class="add-button" onclick="openForm()">Зафиксировать накладную</button>
+        </div>
+        <table class="main-table">
+            <thead>
+            <tr>
+                <th>Номер накладной</th>
+                <th>Дата оформления</th>
+                <th>Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="invoice : ${invoices}">
+                <td th:text="${invoice.getId()}"></td>
+                <td th:text="${invoice.getInvoiceDate()}"></td>
+                <td>
+                    <a th:href="@{/invoice/edit/{id}(id=${invoice.getId()})}" onclick="openEditForm('${invoice.id}', '${invoice.invoiceDate}')"><span>&#9999;</span></a>
+                    <form th:action="@{/invoice/delete/{id}(id=${invoice.getId()})}" method="POST">
+                        <button type="submit"><span>&#10060;</span></button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeForm()">&times;</span>
+        <h2>Зарегистрировать накладную</h2>
+        <form th:action="@{/invoice/create}" method="POST">
+            <table>
+                <tr>
+                    <td>Дата оформления:</td>
+                    <td><input type="text" name="invoiceDate" id="invoiceDate"/></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button type="submit">Зарегистрировать</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+
+<img id="background-image" src="https://freepngimg.com/thumb/mario/114725-mario-boo-super-bros-king.png" alt="Mario Boo Background Image">
+
+<script>
+    function openForm() {
+        document.getElementById("myModal").style.display = "block";
+    }
+
+    function closeForm() {
+        document.getElementById("myModal").style.display = "none";
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        flatpickr("#invoiceDate", {
+            enableTime: false,
+            dateFormat: "Y-m-d",
+            time_24hr: true,
+        });
+    });
+</script>
+</body>
+</html>

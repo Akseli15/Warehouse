@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>МАСТЕРСТРОЙ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/table.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+</head>
+<body>
+<div id="container">
+    <div id="menu">
+        <ul>
+            <li><a href="/good">Товары</a></li>
+            <li><a href="/good_request">Заявки на товары</a></li>
+            <li><a href="/invoice">Накладные</a></li>
+            <li><a href="/order_assembly">ПУНКТЫ ВЫДАЧИ</a></li>
+            <li><a href="/order">Заказы</a></li>
+            <li><a href="/order_detail">Детали заказов</a></li>
+            <li><a href="/shipment">Партии</a></li>
+            <li><a href="/store">Магазины</a></li>
+            <li><a href="/warehouse">Склады</a></li>
+            <li><a href="/warehouse_supplies">Поставки склада</a></li>
+        </ul>
+    </div>
+    <div id="content">
+        <h1>МастерСтрой</h1>
+        <div class="header">
+            <h2>Заявки на товары</h2>
+            <button class="add-button" onclick="openForm()">Оформить заявку</button>
+        </div>
+        <table class="main-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Номер накладной</th>
+                <th>Наименование магазина</th>
+                <th>Наименование товара</th>
+                <th>Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="goodRequest : ${goodRequests}">
+                <td th:text="${goodRequest.getId()}"></td>
+                <td th:text="${goodRequest.invoice.getId()}"></td>
+                <td th:text="${goodRequest.store.getName()}"></td>
+                <td th:text="${goodRequest.good.getName()}"></td>
+                <td>
+                    <a th:href="@{/good_request/edit/{id}(id=${goodRequest.getId()})}" onclick="openEditForm('${goodRequest.id}', '${goodRequest.store.name}', '${goodRequest.good.name}', '${goodRequest.invoice.id}','${goodRequest.quantity}')"><span>&#9999;</span></a>
+                    <form th:action="@{/good_request/delete/{id}(id=${goodRequest.getId()})}" method="POST">
+                        <button type="submit"><span>&#10060;</span></button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeForm()">&times;</span>
+        <h2>Оформить заявку</h2>
+        <form th:action="@{/good_request/create}" method="POST">
+            <table>
+                <tr>
+                    <td>Наименование магазина:</td>
+                    <td>
+                        <select name="storeName" id="name1">
+                            <option th:each="store : ${stores}"
+                                    th:value="${store.name}"
+                                    th:text="${store.name}"
+                                    th:selected="${goodRequest != null && goodRequest.store != null && store.name == goodRequest.store.getName()}"></option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Наименование товара:</td>
+                    <td>
+                        <select name="goodName" id="name2">
+                            <option th:each="good : ${goods}"
+                                    th:value="${good.name}"
+                                    th:text="${good.name}"
+                                    th:selected="${goodRequest != null && goodRequest.good != null && good.name == goodRequest.good.getName()}"></option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Номер накладной:</td>
+                    <td>
+                        <select name="invoiceId" id="id">
+                            <option th:each="invoice : ${invoices}"
+                                    th:value="${invoice.id}"
+                                    th:text="${invoice.id}"
+                                    th:selected="${goodRequest != null && goodRequest.invoice != null && invoice.id == goodRequest.invoice.getId()}"></option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button type="submit">Оформить</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+
+<img id="background-image" src="https://freepngimg.com/thumb/mario/114725-mario-boo-super-bros-king.png" alt="Mario Boo Background Image">
+
+<script>
+    function openForm() {
+        document.getElementById("myModal").style.display = "block";
+    }
+
+    function closeForm() {
+        document.getElementById("myModal").style.display = "none";
+    }
+</script>
+</body>
+</html>
