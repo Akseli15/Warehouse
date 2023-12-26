@@ -35,8 +35,8 @@ public interface OrderRepository extends JpaRepository<Zakaz, Long> {
             "GROUP BY g.name", nativeQuery = true)
     List<Object[]> getProductOrderVolume();
 
-    @Query(value = "SELECT g.name AS product_name, od.quantity AS order_quantity FROM order_detail od " +
+    @Query(value = "SELECT g.name AS product_name,od.quantity AS order_quantity FROM order_detail od " +
             "JOIN good g ON od.fk_good_id = g.good_id " +
-            "WHERE od.fk_order_id = :orderId", nativeQuery = true)
-    List<Object[]> getCurrentOrderDetail(@Param("orderId") Long orderId);
+            "WHERE od.fk_order_id = :order_id", nativeQuery = true)
+    List<Object[]> getCurrentOrderDetail(@Param("order_id") Long order_id);
 }
