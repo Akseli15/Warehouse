@@ -3,6 +3,7 @@ package org.example.repository;
 import org.example.entity.Zakaz;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -33,4 +34,9 @@ public interface OrderRepository extends JpaRepository<Zakaz, Long> {
             "WHERE EXTRACT(MONTH FROM COALESCE(o.order_date, CURRENT_DATE)) = EXTRACT(MONTH FROM CURRENT_DATE) " +
             "GROUP BY g.name", nativeQuery = true)
     List<Object[]> getProductOrderVolume();
+
+    @Query(value = "SELECT g.name AS product_name, od.quantity AS order_quantity FROM order_detail od " +
+            "JOIN good g ON od.fk_good_id = g.good_id " +
+            "WHERE od.fk_order_id = :orderId", nativeQuery = true)
+    List<Object[]> getCurrentOrderDetail(@Param("orderId") Long orderId);
 }

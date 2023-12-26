@@ -90,4 +90,11 @@ public class OrderController {
         model.addAttribute("needed", needed);
         return "needed";
     }
+
+    @GetMapping("/current/{id}")
+    public String showCurrentOrderDetail(@RequestParam Long orderId, Model model) {
+        List<Object[]> current = orderRepository.getCurrentOrderDetail(orderId);
+        model.addAttribute("current", current);
+        return "current";
+    }
 }

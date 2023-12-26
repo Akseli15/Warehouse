@@ -80,6 +80,7 @@
                     <form th:action="@{/order/delete/{id}(id=${order.getId()})}" method="POST">
                         <button type="submit"><span>&#10060;</span></button>
                     </form>
+                    <a th:href="@{'/order/current/' + ${order.getId()}}"><span>&#128269;</span></a>
                 </td>
             </tr>
             </tbody>
