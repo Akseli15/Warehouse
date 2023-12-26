@@ -3,6 +3,7 @@ package org.example.controller;
 
 import org.example.entity.Invoice;
 import org.example.entity.Zakaz;
+import org.example.repository.OrderRepository;
 import org.example.service.InvoiceService;
 import org.example.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/order")
@@ -19,6 +22,8 @@ public class OrderController {
     OrderService orderService;
     @Autowired
     InvoiceService invoiceService;
+    @Autowired
+    OrderRepository orderRepository;
 
     @Async
     @GetMapping("")
@@ -67,5 +72,12 @@ public class OrderController {
     public String editOrder(@ModelAttribute Zakaz zakaz) {
         orderService.update(zakaz);
         return "redirect:/order";
+    }
+
+    @GetMapping("/volume")
+    public String showUnorderedGoods(Model model) {
+        List<Object[]> volume = orderRepository.getProductOrderVolume();
+        model.addAttribute("volume", volume);
+        return "volume";
     }
 }

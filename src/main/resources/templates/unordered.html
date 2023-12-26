@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>МАСТЕРСТРОЙ - Неактуальные товары</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/table.css">
+</head>
+
+<body>
+<h2>Неактуальные товары</h2>
+<a th:href="@{/good}" class="redirect-button">Вернуться к товарам</a>
+<table class="main-table">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Наименование товара</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${unordered}">
+        <td th:text="${item[0]}"></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

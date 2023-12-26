@@ -41,7 +41,7 @@ public class GoodRequestController {
     public String getById(@PathVariable("id") Long id, Model model) {
         GoodRequest goodRequest = goodRequestService.getById(id);
         model.addAttribute("goodRequest", goodRequest);
-        return "good-request-details";
+        return "good-request";
     }
     @Async
     @PostMapping("/create")

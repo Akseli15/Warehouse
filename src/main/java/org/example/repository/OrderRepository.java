@@ -15,4 +15,12 @@ public interface OrderRepository extends JpaRepository<Zakaz, Long> {
             "WHERE MONTH(o.orderDate) = MONTH(CURRENT_DATE) + 1 " +
             "GROUP BY g.name")
     List<Object[]> getRequiredQuantitiesForNextMonth();
+
+    @Query("SELECT g.name AS product_name, COALESCE(SUM(og.quantity), 0) AS order_volume " +
+            "FROM Good g " +
+            "LEFT JOIN OrderDetail og ON g.id = og.good.id " +
+            "LEFT JOIN Zakaz z ON og.zakaz.id = z.id " +
+            "WHERE MONTH(COALESCE(z.orderDate, CURRENT_DATE)) = MONTH(CURRENT_DATE) " +
+            "GROUP BY g.name")
+    List<Object[]> getProductOrderVolume();
 }

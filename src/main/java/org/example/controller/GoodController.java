@@ -32,7 +32,7 @@ public class GoodController {
     public String getById(@PathVariable("id") Long id, Model model) {
         Good good = goodService.getById(id);
         model.addAttribute("good", good);
-        return "good-details";
+        return "good";
     }
 
     @Async
@@ -61,7 +61,7 @@ public class GoodController {
     public String getGood(@PathVariable("id") Long id, Model model) {
         Good good = goodService.getById(id);
         model.addAttribute("good", good);
-        return "edit-good";
+        return "good";
     }
 
     @Async
@@ -69,5 +69,12 @@ public class GoodController {
     public String editGood(@ModelAttribute Good good) {
         goodService.update(good);
         return "redirect:/good";
+    }
+
+    @GetMapping("/unordered")
+    public String showUnorderedGoods(Model model) {
+        List<Object[]> unordered = goodRepository.getProductOrderVolume();
+        model.addAttribute("unordered", unordered);
+        return "unordered";
     }
 }

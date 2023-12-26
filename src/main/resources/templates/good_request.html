@@ -7,6 +7,52 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </head>
+
+<style>
+    #editModal .modal-content {
+        background-color: var(--secondary-bg);
+        margin: 10% auto;
+        padding: 20px;
+        max-width: 700px;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    #editModal button {
+        background-color: var(--accent-bg);
+        color: #1F2421;
+        border: none;
+        padding: 10px 20px;
+        font-size: 15px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        border-radius: 5px;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+    #editModal button:hover {
+        background-color: #B8E0D2;
+        box-shadow: var(--button-glow);
+    }
+
+    #editModal .close {
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+    #editModal .close:hover {
+        color: var(--accent-bg);
+    }
+
+    #editModal input{
+        width: 80%;
+    }
+</style>
+
 <body>
 <div id="container">
     <div id="menu">
@@ -106,6 +152,60 @@
     </div>
 </div>
 
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeEditForm()"></span>
+        <h2>Редактировать заявку</h2>
+        <form id="editForm" th:action="@{/good_request/edit/{id}}" method="POST">
+            <input type="hidden" name="id" id="editId1"/>
+            <table>
+                <tr>
+                    <td>Наименование магазина:</td>
+                    <td>
+                        <select name="storeName" id="editName1">
+                            <option th:each="store : ${stores}"
+                                    th:value="${store.name}"
+                                    th:text="${store.name}"
+                                    th:selected="${goodRequest != null && goodRequest.store != null && store.name == goodRequest.store.getName()}"></option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Наименование товара:</td>
+                    <td>
+                        <select name="goodName" id="editName2">
+                            <option th:each="good : ${goods}"
+                                    th:value="${good.name}"
+                                    th:text="${good.name}"
+                                    th:selected="${goodRequest != null && goodRequest.good != null && good.name == goodRequest.good.getName()}"></option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Номер накладной:</td>
+                    <td>
+                        <select name="invoiceId" id="editId">
+                            <option th:each="invoice : ${invoices}"
+                                    th:value="${invoice.id}"
+                                    th:text="${invoice.id}"
+                                    th:selected="${goodRequest != null && goodRequest.invoice != null && invoice.id == goodRequest.invoice.getId()}"></option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Количество:</td>
+                    <td><input type="text" name="quantity" id="editQuantity"/></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button type="button" onclick="submitEditForm()">Сохранить</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+
 <img id="background-image" src="https://freepngimg.com/thumb/mario/114725-mario-boo-super-bros-king.png" alt="Mario Boo Background Image">
 
 <script>
@@ -115,6 +215,33 @@
 
     function closeForm() {
         document.getElementById("myModal").style.display = "none";
+    }
+
+    function openEditForm(id, storeName, goodName, invoiceId, quantity) {
+        document.getElementById("editId1").value = id;
+        setSelectedValue("editName1", storeName);
+        setSelectedValue("editName2", goodName);
+        setSelectedValue("editId", invoiceId);
+        document.getElementById("editQuantity").value = quantity;
+        document.getElementById("editModal").style.display = "block";
+    }
+
+    function setSelectedValue(selectId, value) {
+        var select = document.getElementById(selectId);
+        for (var i = 0; i < select.options.length; i++) {
+            if (select.options[i].text === value) {
+                select.options[i].selected = true;
+                break;
+            }
+        }
+    }
+
+    function closeEditForm() {
+        document.getElementById("editModal").style.display = "none";
+    }
+
+    function submitEditForm() {
+        document.getElementById("editForm").submit();
     }
 </script>
 </body>

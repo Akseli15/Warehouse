@@ -53,7 +53,7 @@
             <h2>Заказы</h2>
             <div>
                 <button class="add-button" onclick="openForm()">Оформить заказ</button>
-                <button class="unordered-button" onclick="showUnorderedGoods1()">Объём заказов за текущий месяц</button>
+                <button class="unordered-button" onclick="showUnorderedGoods()">Объём заказов за текущий месяц</button>
                 <button class="unordered-button" onclick="showUnorderedGoods2()">Количество товаров для заказа на следующий месяц</button>
             </div>
         </div>
@@ -150,6 +150,10 @@
             time_24hr: true,
         });
     });
+
+    function showUnorderedGoods() {
+        window.location.href = "/order/volume";
+    }
 </script>
 </body>
 </html>

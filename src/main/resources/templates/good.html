@@ -7,6 +7,52 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </head>
+
+<style>
+    #editModal .modal-content {
+        background-color: var(--secondary-bg);
+        margin: 10% auto;
+        padding: 20px;
+        max-width: 700px;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    #editModal button {
+        background-color: var(--accent-bg);
+        color: #1F2421;
+        border: none;
+        padding: 10px 20px;
+        font-size: 15px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        border-radius: 5px;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+    #editModal button:hover {
+        background-color: #B8E0D2;
+        box-shadow: var(--button-glow);
+    }
+
+    #editModal .close {
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+    #editModal .close:hover {
+        color: var(--accent-bg);
+    }
+
+    #editModal input{
+        width: 80%;
+    }
+</style>
+
 <body>
 <div id="container">
     <div id="menu">
@@ -49,7 +95,9 @@
                 <td th:text="${good.getDescription()}"></td>
                 <td th:text="${good.getPrice()}"></td>
                 <td>
-                    <a th:href="@{/good/{id}(id=${good.getId()})}" onclick="openEditForm(good.getName(), good.getDescription(), good.getPrice())"><span>&#9999;</span></a>
+                    <a th:href="'javascript:openEditForm(\'' + ${good.getId()} + '\', \'' + ${good.getName()} + '\', \'' + ${good.getDescription()} + '\', \'' + ${good.getPrice()} + '\')'">
+                        <span>&#9999;</span>
+                    </a>
                     <form th:action="@{/good/delete/{id}(id=${good.getId()})}" method="POST">
                         <button type="submit"><span>&#10060;</span></button>
                     </form>
@@ -88,40 +136,41 @@
     </div>
 </div>
 
-<div id="editModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeEditForm()">&times;</span>
-        <h2>Редактировать товар</h2>
-        <form id="editForm" th:action="@{/good/edit/{id}}" method="POST">
-            <input type="hidden" name="id" id="editId"/>
-            <table>
-                <tr>
-                    <td>Наименование товара:</td>
-                    <td><input type="text" name="name" id="editName"/></td>
-                </tr>
-                <tr>
-                    <td>Описание товара:</td>
-                    <td><input type="text" name="description" id="editDescription"/></td>
-                </tr>
-                <tr>
-                    <td>Стоимость товара (в рублях):</td>
-                    <td><input type="text" name="price" id="editPrice"/></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <button type="button" onclick="submitEditForm()">Сохранить</button>
-                    </td>
-                </tr>
-            </table>
-        </form>
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditForm()">&times;</span>
+            <h2>Редактировать товар</h2>
+            <form id="editForm" th:action="@{/good/edit/{id}}" method="POST">
+                <input type="hidden" name="id" id="editId"/>
+                <table>
+                    <tr>
+                        <td>Наименование товара:</td>
+                        <td><input type="text" name="name" id="editName"/></td>
+                    </tr>
+                    <tr>
+                        <td>Описание товара:</td>
+                        <td><input type="text" name="description" id="editDescription"/></td>
+                    </tr>
+                    <tr>
+                        <td>Стоимость товара (в рублях):</td>
+                        <td><input type="text" name="price" id="editPrice"/></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button type="button" onclick="submitEditForm()">Сохранить</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
     </div>
-</div>
 
 <img id="background-image" src="https://freepngimg.com/thumb/mario/114725-mario-boo-super-bros-king.png" alt="Mario Boo Background Image">
 
 <script>
     function openForm() {
         document.getElementById("myModal").style.display = "block";
+        document.getElementById("editModal").style.display = "none";
     }
 
     function closeForm() {
@@ -134,6 +183,7 @@
         document.getElementById("editDescription").value = description;
         document.getElementById("editPrice").value = price;
         document.getElementById("editModal").style.display = "block";
+        document.getElementById("myModal").style.display = "none";
     }
 
     function closeEditForm() {
@@ -142,6 +192,10 @@
 
     function submitEditForm() {
         document.getElementById("editForm").submit();
+    }
+
+    function showUnorderedGoods() {
+        window.location.href = "/good/unordered";
     }
 </script>
 </body>
