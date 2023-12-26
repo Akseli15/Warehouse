@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>МАСТЕРСТРОЙ - Неактуальные товары</title>
+    <title>МАСТЕРСТРОЙ - Остатки на складе</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/table.css">
 </head>
-
 <body>
-<h2>Неактуальные товары</h2>
-<a th:href="@{/good}" class="redirect-button">Вернуться к товарам</a>
+<h2>Остатки на складе</h2>
+<a th:href="@{/shipment}" class="redirect-button">Вернуться к партиям</a>
 <table class="main-table">
     <thead>
     <tr>
         <th>Наименование товара</th>
+        <th>Количество</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="item : ${unordered}">
+    <tr th:each="item : ${remainder}">
         <td th:text="${item[0]}"></td>
+        <td th:text="${item[1]}"></td>
     </tr>
     </tbody>
 </table>

@@ -1,25 +1,29 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>МАСТЕРСТРОЙ - Объём заказов за текущий месяц</title>
+    <title>МАСТЕРСТРОЙ - Количество товаров для заказа на следующий месяц</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/table.css">
 </head>
 
 <body>
-<h2>Объём заказов за текущий месяц</h2>
+<h2>Количество товаров для заказа на следующий месяц</h2>
 <a th:href="@{/order}" class="redirect-button">Вернуться к заказам</a>
 <table class="main-table">
     <thead>
     <tr>
         <th>Наименование товара</th>
-        <th>Количество</th>
+        <th>Объём заказов</th>
+        <th>Осталось на складе</th>
+        <th>Необходимо заказать</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="item : ${volume}">
+    <tr th:each="item : ${needed}">
         <td th:text="${item[0]}"></td>
         <td th:text="${item[1]}"></td>
+        <td th:text="${item[2]}"></td>
+        <td th:text="${item[3]}"></td>
     </tr>
     </tbody>
 </table>

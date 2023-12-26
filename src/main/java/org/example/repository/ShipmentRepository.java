@@ -8,8 +8,9 @@ import java.util.List;
 
 public interface ShipmentRepository extends JpaRepository<Shipment, Long> {
 
-    @Query("SELECT g.name AS product_name, COALESCE(SUM(s.quantity), 0) AS remaining_quantity FROM Good g " +
-            "LEFT JOIN Shipment s ON g.id = s.good.id " +
-            "GROUP BY g.name")
+    @Query(value= "SELECT g.name AS product_name, COALESCE(SUM(s.quantity), 0) AS remaining_quantity " +
+            "FROM good g " +
+            "LEFT JOIN shipment s ON g.good_id = s.fk_good_id " +
+            "GROUP BY g.name", nativeQuery = true)
     List<Object[]> getRemainingQuantities();
 }

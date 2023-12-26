@@ -3,6 +3,7 @@ package org.example.controller;
 import org.example.entity.Good;
 import org.example.entity.Shipment;
 import org.example.entity.Warehouse;
+import org.example.repository.ShipmentRepository;
 import org.example.service.GoodService;
 import org.example.service.ShipmentService;
 import org.example.service.WarehouseService;
@@ -11,6 +12,8 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/shipment")
@@ -22,6 +25,8 @@ public class ShipmentController {
     GoodService goodService;
     @Autowired
     WarehouseService warehouseService;
+    @Autowired
+    ShipmentRepository shipmentRepository;
 
     @Async
     @GetMapping("")
@@ -74,5 +79,12 @@ public class ShipmentController {
     public String editShipment(@ModelAttribute Shipment invoice) {
         shipmentService.update(invoice);
         return "redirect:/shipment";
+    }
+
+    @GetMapping("/remainder")
+    public String showRemainingQuantities(Model model) {
+        List<Object[]> remainder = shipmentRepository.getRemainingQuantities();
+        model.addAttribute("remainder", remainder);
+        return "remainder";
     }
 }

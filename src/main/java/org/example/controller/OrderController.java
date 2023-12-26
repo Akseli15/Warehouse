@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -42,9 +43,11 @@ public class OrderController {
     @Async
     @PostMapping("/create")
     public String create(@ModelAttribute Zakaz zakaz,
-                         @RequestParam("invoiceId") Long invoiceId){
+                         @RequestParam("invoiceId") Long invoiceId,
+                         @RequestParam("orderDate") LocalDate orderDate) {
         Invoice invoice = invoiceService.getById(invoiceId);
         zakaz.setInvoice(invoice);
+        zakaz.setOrderDate(orderDate);
         orderService.create(zakaz);
         return "redirect:/order";
     }
@@ -79,5 +82,12 @@ public class OrderController {
         List<Object[]> volume = orderRepository.getProductOrderVolume();
         model.addAttribute("volume", volume);
         return "volume";
+    }
+
+    @GetMapping("/needed")
+    public String showRequiredQuantitiesOfGoods(Model model) {
+        List<Object[]> needed = orderRepository.getRequiredQuantitiesForNextMonth();
+        model.addAttribute("needed", needed);
+        return "needed";
     }
 }

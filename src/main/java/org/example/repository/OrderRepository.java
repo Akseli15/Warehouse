@@ -8,19 +8,29 @@ import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Zakaz, Long> {
 
-    @Query("SELECT g.name AS product_name, (SUM(og.quantity) - COALESCE(SUM(s.quantity), 0)) AS required_quantity FROM Zakaz o " +
-            "JOIN OrderDetail og ON o.id = og.zakaz.id " +
-            "JOIN Good g ON og.good.id = g.id " +
-            "LEFT JOIN Shipment s ON g.id = s.good.id " +
-            "WHERE MONTH(o.orderDate) = MONTH(CURRENT_DATE) + 1 " +
-            "GROUP BY g.name")
+    @Query(value = "SELECT " +
+            "    g.name AS product_name, " +
+            "    COALESCE(SUM(o.quantity), 0) AS order_volume, " +
+            "    COALESCE(SUM(s.quantity), 0) AS remaining_quantity, " +
+            "    CASE " +
+            "        WHEN COALESCE(SUM(o.quantity), 0) > COALESCE(SUM(s.quantity), 0) " +
+            "THEN COALESCE(SUM(o.quantity), 0) - COALESCE(SUM(s.quantity), 0) " +
+            "        ELSE 0 " +
+            "    END AS quantity_to_order " +
+            "FROM good g " +
+            "LEFT JOIN order_detail o ON g.good_id = o.fk_good_id " +
+            "LEFT JOIN shipment s ON g.good_id = s.fk_good_id " +
+            "LEFT JOIN zakaz ord ON o.fk_order_id = ord.order_id AND " +
+            "EXTRACT(MONTH FROM ord.order_date) = EXTRACT(MONTH FROM CURRENT_DATE + INTERVAL '1 month') " +
+            "WHERE EXTRACT(MONTH FROM COALESCE(ord.order_date, CURRENT_DATE)) = EXTRACT(MONTH FROM CURRENT_DATE) " +
+            "GROUP BY g.name", nativeQuery = true)
     List<Object[]> getRequiredQuantitiesForNextMonth();
 
-    @Query("SELECT g.name AS product_name, COALESCE(SUM(og.quantity), 0) AS order_volume " +
-            "FROM Good g " +
-            "LEFT JOIN OrderDetail og ON g.id = og.good.id " +
-            "LEFT JOIN Zakaz z ON og.zakaz.id = z.id " +
-            "WHERE MONTH(COALESCE(z.orderDate, CURRENT_DATE)) = MONTH(CURRENT_DATE) " +
-            "GROUP BY g.name")
+    @Query(value = "SELECT g.name AS product_name, COALESCE(SUM(og.quantity), 0) AS order_volume " +
+            "FROM good g " +
+            "LEFT JOIN order_detail og ON g.good_id = og.fk_good_id " +
+            "LEFT JOIN zakaz o ON og.fk_order_id = o.order_id AND EXTRACT(MONTH FROM o.order_date) = EXTRACT(MONTH FROM CURRENT_DATE) " +
+            "WHERE EXTRACT(MONTH FROM COALESCE(o.order_date, CURRENT_DATE)) = EXTRACT(MONTH FROM CURRENT_DATE) " +
+            "GROUP BY g.name", nativeQuery = true)
     List<Object[]> getProductOrderVolume();
 }

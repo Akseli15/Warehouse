@@ -8,11 +8,10 @@ import java.util.List;
 
 public interface GoodRepository extends JpaRepository<Good, Long> {
 
-    @Query("SELECT g.name AS product_name FROM Good g " +
-            "LEFT JOIN g.orderDetails od " +
-            "LEFT JOIN od.zakaz o " +
-            "WHERE FUNCTION('MONTH', o.orderDate) = FUNCTION('MONTH', CURRENT_DATE) " +
-            "AND o.id IS NULL")
+    @Query(value = "SELECT g.name AS product_name FROM good g " +
+            "LEFT JOIN order_detail og ON g.good_id = og.fk_good_id " +
+            "LEFT JOIN zakaz o ON og.fk_order_id = o.order_id AND EXTRACT(MONTH FROM o.order_date) = EXTRACT(MONTH FROM CURRENT_DATE) " +
+            "WHERE o.order_id IS NULL", nativeQuery = true)
     List<Object[]> getProductOrderVolume();
 
     Good findFirstByName(String name);
